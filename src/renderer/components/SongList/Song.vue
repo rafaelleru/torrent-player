@@ -1,7 +1,5 @@
 <template>
   <div v-bind:class="{ 'light-primary-color': play, song: notplay}">
-    <!-- TODO: move this to index.html -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <div class="play-button">
       <i class="material-icons">play_circle_outline</i>
     </div>
@@ -53,7 +51,7 @@
   }
 
   .song-title {
-  cursor: pointer;
+  curso    </div>r: pointer;
   color: primary-text-color;
   display: inline-block;
 }

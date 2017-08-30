@@ -1,4 +1,4 @@
-import store from '../store'
+// import store from '../store'
 const {ipcMain} = require('electron')
 const WebTorrent = require('webtorrent')
 const client = new WebTorrent()
@@ -32,6 +32,6 @@ ipcMain.on('addMagnet', (event, arg) => {
         duration: '--:--'
       })
     })
-    store.dispatch('addSongs', files)
+    event.sender.send('updateSongs', files)
   })
 })

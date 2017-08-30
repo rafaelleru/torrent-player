@@ -16,40 +16,9 @@ import Song from './SongList/Song'
 export default {
   name: 'playlist',
   components: { Song },
-  data: function () {
-    return {
-      songs: [
-        {
-          title: '01 - Cigarrito',
-          torrent: 'sadlkjfañlksjfdñlksajdfñlkajsdf',
-          index: 1,
-          duration: '3:15'
-        },
-        {
-          title: '02 - Tras la barra',
-          torrent: 'sadlkjfañlksjfdñlksajdfñlkajsdf',
-          index: 1,
-          duration: '3:15'
-        },
-        {
-          title: '03 - Alucinante',
-          torrent: 'sadlkjfañlksjfdñlksajdfñlkajsdf',
-          index: 1,
-          duration: '3:15'
-        },
-        {
-          title: '03 - Si la tocas otra vez',
-          torrent: 'sadlkjfañlksjfdñlksajdfñlkajsdf',
-          index: 1,
-          duration: '3:15'
-        },
-        {
-          title: '03 - Un abecedario sin letras',
-          torrent: 'sadlkjfañlksjfdñlksajdfñlkajsdf',
-          index: 1,
-          duration: '3:15'
-        }
-      ]
+  computed: {
+    songs () {
+      return this.$store.getters.songs
     }
   }
 }

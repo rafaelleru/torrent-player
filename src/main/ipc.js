@@ -32,6 +32,6 @@ ipcMain.on('addMagnet', (event, arg) => {
         duration: '--:--'
       })
     })
-    store.('addSongs', files)
+    store.dispatch('addSongs', files)
   })
 })

@@ -40,9 +40,15 @@ export const getters = {
 }
 
 export const mutations = {
-  addSongs (state, newSongs) {
-    newSongs.forEach(function (song) {
-      state.songs.push(song)
+  addSong (state, newSong) {
+    state.songs.push(newSong)
+  }
+}
+
+export const actions = {
+  addSongs ({ commit }, songs) {
+    songs.forEach(function (s) {
+      commit('addSong', s)
     })
   }
 }

@@ -14,7 +14,7 @@
      <label for="file" class="utility-button">
        <i class="material-icons">folder_open</i>
      </label>
-     <a class="utility-button"> -->
+     <a class="utility-button">
        <i class="material-icons">file_download</i>
      </a>
      <a class="utility-button">
@@ -28,8 +28,25 @@
 </template>
 
 <script>
+  const {ipcRenderer} = require('electron')
+
   export default {
-    name: 'my-header'
+    name: 'top-bar',
+    data: function () {
+      return {
+        magnet: ''
+      }
+    },
+    methods: {
+      addMagnet: function () {
+        try {
+          ipcRenderer.send('addMagnet', this.magnet)
+          this.magnet = ''
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    }
   }
 </script>
 

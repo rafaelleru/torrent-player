@@ -4,7 +4,7 @@
       <i class="material-icons play-button" >skip_previous</i>
       <i class="material-icons play-button" v-on:click="togglePause">play_circle_outline</i>
       <i class="material-icons play-button" >skip_next</i>
-      <audio ref="audioTag" :src="source" autoplay controls></audio>
+      <audio ref="audioTag" :src="source" autoplay preload="none" controls></audio>
     </div>
     <!-- <progress min="0" max="1" value="0" ref="progress"></progress> -->
   </footer>

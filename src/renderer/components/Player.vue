@@ -1,10 +1,12 @@
 <template>
   <footer id="player" class="player">
+    <progress min="0" max="1" value="0" ref="progress"></progress>
     <div class="div-player">
-      <i class="material-icons play-button" >skip_previous</i>
-      <i class="material-icons play-button" v-on:click="togglePause">play_circle_outline</i>
-      <i class="material-icons play-button" >skip_next</i>
-      <audio ref="audioTag" :src="source" autoplay preload="none" controls></audio>
+      <i class="material-icons play-button player-button" >skip_previous</i>
+      <i class="material-icons play-button player-button" v-on:click="togglePause">play_circle_outline</i>
+      <i class="material-icons play-button player-button" >skip_next</i>
+      <audio ref="audioTag" :src="source" autoplay preload="none" @timeupdate="onTimeUpdateListener"></audio>
+      <a class=".primary-text-color" style="text-align: center; font-size: small;">{{ title }}</a>
     </div>
     <!-- <progress min="0" max="1" value="0" ref="progress"></progress> -->
   </footer>
@@ -40,6 +42,9 @@
     computed: {
       source () {
         return this.$store.getters.src
+      },
+      title () {
+        return this.$store.getters.title
       }
     }
   }
@@ -51,8 +56,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 50px;
+  height: 60px;
   width: 100%;
+  background-color: #607D8B;
 }
 
 .div-player{
@@ -62,4 +68,14 @@
 .player progress{
   width:100%;
 }
+
+.player-button{
+  color:#212121;
+}
+
+.player-button+:hover{
+  color: #2196F3
+}
+
+.primary-text-color    { color: #212121; }
 </style>

@@ -1,11 +1,12 @@
 <template>
   <div v-bind:class="{ 'light-primary-color': play, song: notplay}">
-    <div class="play-button">
+    <div class="play-button" v-on:click="this.requestPlay">
       <i class="material-icons">play_circle_outline</i>
     </div>
     <div class="song-container">
       <a class="song-title primary-text-color"
-        style="float: left;"> {{ title }}</a>
+        style="float: left;"
+        v-on:click="this.requestPlay"> {{ title }}</a>
       <a style="display: inline-block; float: right"> {{ duration }} </a>
       <p style="font-size: small" class="secondary-text-color"> {{ torrent }} </p>
     </div>
@@ -13,7 +14,8 @@
 </template>
 
 <script>
-  // const {ipcRenderer} = require('electron')
+  const {ipcRenderer} = require('electron')
+
   export default {
     name: 'song',
     props: ['title', 'torrent', 'index', 'duration'],
@@ -21,6 +23,11 @@
       return {
         play: false,
         notplay: true
+      }
+    },
+    methods: {
+      requestPlay: function () {
+        ipcRenderer.send('requestPlay', [this.torrent, this.index])
       }
     }
   }

@@ -28,13 +28,13 @@ ipcMain.on('requestPlay', (event, args) => {
     server = client.get(args[0]).createServer()
     server.listen(9999)
     torrentId = args[0]
-    event.sender.send('canPlay', args[1])
+    event.sender.send('canPlay', [args[1], args[2]])
   } else if (torrentId !== args[1]) {
     server.close()
     server = client.get(args[0]).createServer()
     server.listen(9999)
-    event.sender.send('canPlay', args[1])
+    event.sender.send('canPlay', [args[1], args[2]])
   } else {
-    event.sender.send('canPlay', args[1])
+    event.sender.send('canPlay', [args[1], args[2]])
   }
 })

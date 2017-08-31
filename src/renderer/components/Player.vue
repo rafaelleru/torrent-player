@@ -4,9 +4,9 @@
       <i class="material-icons play-button" >skip_previous</i>
       <i class="material-icons play-button" v-on:click="togglePause">play_circle_outline</i>
       <i class="material-icons play-button" >skip_next</i>
-      <audio ref="audioTag" src="http://nadikun.com/audio/suit-and-tie-oscar-wylde-remix.mp3" @timeupdate="onTimeUpdateListener"></audio>
+      <audio ref="audioTag" :src="source" autoplay controls></audio>
     </div>
-    <progress min="0" max="1" value="0" ref="progress"></progress>
+    <!-- <progress min="0" max="1" value="0" ref="progress"></progress> -->
   </footer>
 </template>
 
@@ -16,6 +16,7 @@
     data: function () {
       return {
         playing: false
+        // source: 'http://nadikun.com/audio/suit-and-tie-oscar-wylde-remix.mp3'
       }
     },
     methods: {
@@ -34,6 +35,11 @@
         var audio = this.$refs.audioTag
         var currentProgress = (audio.currentTime / audio.duration)
         progressbar.value = currentProgress
+      }
+    },
+    computed: {
+      source () {
+        return this.$store.getters.src
       }
     }
   }

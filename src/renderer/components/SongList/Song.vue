@@ -27,7 +27,7 @@
     },
     methods: {
       requestPlay: function () {
-        ipcRenderer.send('requestPlay', [this.torrent, this.index])
+        ipcRenderer.send('requestPlay', [this.torrent, this.index, this.title])
       }
     }
   }

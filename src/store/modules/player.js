@@ -1,23 +1,27 @@
 const state = {
   url: 'http://localhost:9999/',
-  torrentId: '',
-  songIndex: ''
+  songIndex: '',
+  title: ''
 }
 
 const mutations = {
-  updateTorrentId (state, torrentId) {
-    state.torrentId = torrentId
-  },
-
   updateSongIndex (state, index) {
     state.songIndex = index
+  },
+
+  updateTitle (state, title) {
+    state.title = title
   }
 }
 
 const getters = {
   src (state) {
-    console.log(state.songIndex)
+    // console.log(state.songIndex)
     return state.url + state.songIndex
+  },
+
+  title (state) {
+    return state.title
   }
 }
 

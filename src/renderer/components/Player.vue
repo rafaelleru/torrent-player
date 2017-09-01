@@ -2,15 +2,15 @@
   <footer id="player" class="player">
     <progress min="0" max="1" value="0" ref="progress"></progress>
     <div class="div-player">
-      <i class="material-icons play-button player-button" >skip_previous</i>
-      <i class="material-icons play-button player-button" v-on:click="togglePause">{{ playStatus }}</i>
-      <i class="material-icons play-button player-button" >skip_next</i>
-      <i class="material-icons play-button player-button"
+      <a class=".primary-text-color" style="float: left; font-size: small;">{{ title }}</a>
+      <i class="material-icons player-button play-button" >skip_previous</i>
+      <i class="material-icons player-button play-button" v-on:click="togglePause">{{ playStatus }}</i>
+      <i class="material-icons player-button play-button" >skip_next</i>
+      <i class="material-icons player-button play-button"
         style="float: right" v-on:click="toggleVolume">{{ volumeStatus }}</i>
-      <audio ref="audioTag" :src="source" autoplay preload="none"
-        @timeupdate="onTimeUpdateListener" v-on:ended="requestNext"></audio>
-      <a class=".primary-text-color" style="text-align: center; font-size: small;">{{ title }}</a>
     </div>
+    <audio ref="audioTag" :src="source" autoplay preload="none"
+      @timeupdate="onTimeUpdateListener" v-on:ended="requestNext"></audio>
     <!-- <progress min="0" max="1" value="0" ref="progress"></progress> -->
   </footer>
 </template>
@@ -93,7 +93,7 @@
 
 .div-player{
   display: inline;
-  margin:0 48.2%;
+  /*margin:0 48.2%;*/
 }
 .player progress{
   width:100%;

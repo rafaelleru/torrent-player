@@ -1,11 +1,12 @@
 <template>
-  <div id="playlist">
+  <div id="playlist" class="playlist">
     <div
       is="song"
       v-for="song in songs"
       v-bind:title="song.title"
       v-bind:torrent="song.torrent"
-      v-bind:index="song.index">
+      v-bind:index="song.index"
+      v-bind:duration="song.duration">
     </div>
   </div>
 </template>
@@ -25,6 +26,10 @@ export default {
 </script>
 
 <style>
+.playlist {
+  margin-top: 55px;
+}
+
 .play-button {
   display: table-cell;
   vertical-align: middle;
@@ -34,7 +39,6 @@ export default {
 .play-button:hover{
   color: #607D8B;
 }
-
 
 .song-container {
   text-align: left;

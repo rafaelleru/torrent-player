@@ -44,6 +44,7 @@ ipcMain.on('requestPlay', (event, args) => {
 ipcMain.on('playEnded', (event, args) => {
   console.log('end' + args)
   var title
+  var newIndex = args[1] + 1
   if (torrentId !== args[0]) {
     server.close()
     server = client.get(args[0]).createServer()
@@ -51,8 +52,8 @@ ipcMain.on('playEnded', (event, args) => {
     title = client.get(args[0]).files[args[1]].name
     event.sender.send('canPlay', args.concat([title]))
   } else {
-    title = client.get(args[0]).files[args[1]].name
+    title = client.get(args[0]).files[args[1] + 1].name
     console.log(args.concat([title]))
-    event.sender.send('canPlay', args.concat([title]))
+    event.sender.send('canPlay', [args[0], newIndex, title])
   }
 })

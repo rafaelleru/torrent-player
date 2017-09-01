@@ -3,9 +3,11 @@
     <progress min="0" max="1" value="0" ref="progress"></progress>
     <div class="div-player">
       <i class="material-icons play-button player-button" >skip_previous</i>
-      <i class="material-icons play-button player-button" v-on:click="togglePause">play_circle_outline</i>
+      <i class="material-icons play-button player-button" v-on:click="togglePause">{{ playStatus }}</i>
       <i class="material-icons play-button player-button" >skip_next</i>
-      <audio ref="audioTag" :src="source" autoplay preload="none" @timeupdate="onTimeUpdateListener"></audio>
+      <i class="material-icons play-button player-button"
+        style="float: right" v-on:click="toggleVolume">{{ volumeStatus }}</i>
+      <audio ref="audioTag" :src="source" autoplay="true" preload="none" @timeupdate="onTimeUpdateListener" v-on:ended="requestNext"></audio>
       <a class=".primary-text-color" style="text-align: center; font-size: small;">{{ title }}</a>
     </div>
     <!-- <progress min="0" max="1" value="0" ref="progress"></progress> -->
@@ -13,11 +15,16 @@
 </template>
 
 <script>
+  const {ipcRenderer} = require('electron')
+
   export default {
     name: 'player',
     data: function () {
       return {
-        playing: false
+        playing: true,
+        playStatus: 'play_circle_outline',
+        mute: false,
+        volumeStatus: 'volume_up'
         // source: 'http://nadikun.com/audio/suit-and-tie-oscar-wylde-remix.mp3'
       }
     },
@@ -26,10 +33,23 @@
         var audio = this.$refs.audioTag
         if (!this.playing) {
           audio.play()
+          this.playStatus = 'pause_circle_outline'
           this.playing = !this.playing
         } else {
           audio.pause()
           this.playing = !this.playing
+          this.playStatus = 'play_circle_outline'
+        }
+      },
+      toggleVolume: function () {
+        if (this.mute) {
+          this.mute = false
+          this.volumeStatus = 'volume_up'
+          this.$refs.audioTag.muted = false
+        } else {
+          this.mute = true
+          this.volumeStatus = 'volume_off'
+          this.$refs.audioTag.muted = true
         }
       },
       onTimeUpdateListener: function () {
@@ -37,6 +57,10 @@
         var audio = this.$refs.audioTag
         var currentProgress = (audio.currentTime / audio.duration)
         progressbar.value = currentProgress
+      },
+      requestNext: function () {
+        ipcRenderer.send('playEnded', [this.$store.getters.torrentId,
+          this.$store.getters.songIndex])
       }
     },
     computed: {

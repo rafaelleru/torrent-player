@@ -1,7 +1,8 @@
 const state = {
   url: 'http://localhost:9999/',
   songIndex: '',
-  title: ''
+  title: '',
+  torrent: ''
 }
 
 const mutations = {
@@ -11,6 +12,10 @@ const mutations = {
 
   updateTitle (state, title) {
     state.title = title
+  },
+
+  updateTorrentId (state, torrent) {
+    state.torrent = torrent
   }
 }
 
@@ -22,6 +27,14 @@ const getters = {
 
   title (state) {
     return state.title
+  },
+
+  torrentId (state) {
+    return state.torrent
+  },
+
+  songIndex (state) {
+    return state.songIndex
   }
 }
 

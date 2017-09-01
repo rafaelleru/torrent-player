@@ -1,5 +1,7 @@
 # torrent-player
 
+[![Join the chat at https://gitter.im/torrentPlayer/Lobby](https://badges.gitter.im/torrentPlayer/Lobby.svg)](https://gitter.im/torrentPlayer/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 > An electron-vue project
 
 #### Build Setup

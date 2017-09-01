@@ -141,4 +141,16 @@
       background-color: transparent;
       color: #616161;
   }
+
+    .dark-primary-color    { background: #1976D2; }
+  .default-primary-color { background: #2196F3; }
+  .light-primary-color   { background: #BBDEFB; }
+  .text-primary-color    { color: #FFFFFF; }
+  .accent-color          { background: #607D8B; }
+  .primary-text-color    { color: #212121; }
+  .secondary-text-color  { color: #757575; }
+  .divider-color         { border-color: #BDBDBD; }
+  .par                   { background-color: #CFD8DC; }
+  .impar                 { background-color: #ECEFF1 }
+
 </style>

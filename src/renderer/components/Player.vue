@@ -22,7 +22,7 @@
     name: 'player',
     data: function () {
       return {
-        playing: true,
+        playing: false,
         playStatus: 'play_circle_outline',
         mute: false,
         volumeStatus: 'volume_up'
@@ -75,6 +75,10 @@
     watch: {
       source (val) {
         console.log('new source: ' + this.source)
+        if (!this.playing) {
+          this.playing = true
+          this.playStatus = 'pause_circle_outline'
+        }
       }
     }
   }

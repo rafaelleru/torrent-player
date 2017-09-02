@@ -10,3 +10,7 @@ ipcRenderer.on('canPlay', (event, args) => {
   store.commit('updateSongIndex', args[1])
   store.commit('updateTitle', args[2])
 })
+
+ipcRenderer.on('newStatus', (event, args) => {
+  store.commit('updateStatus', args)
+})

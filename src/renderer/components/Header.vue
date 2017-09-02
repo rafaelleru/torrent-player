@@ -1,5 +1,6 @@
 <template>
   <header id="header" class="header dark-primary-color">
+  <link rel="stylesheet" href="../../node_modules/vue-material/dist/vue-material.css">
   <nav class="inner" style="vertical-align: middle">
      <a style="display: inline-block; font-size: x-large; float: left">Torrent Player</a>
      <a style="display: inline-block; vertical-align: middle;">
@@ -14,9 +15,21 @@
      <label for="file" class="utility-button">
        <i class="material-icons">folder_open</i>
      </label>
-     <a class="utility-button">
-       <i class="material-icons">file_download</i>
-     </a>
+    <md-menu class="utility-button" md-direction="bottom left" md-size="7">
+       <md-button md-menu-trigger class="md-icon-button"
+          v-on:click="updateTorrentStatus">
+         <i class="material-icons">file_download</i>
+       </md-button>
+       <md-menu-content>
+         <md-menu-item
+          is="torrent-progress"
+          v-for="t in torrentStatus"
+          v-bind:title="t.title"
+          v-bind:hash="t.hash"
+          v-bind:progress="t.progress">
+         </md-menu-item>
+       </md-menu-content>
+     </md-menu>
      <a class="utility-button">
        <i class="material-icons">settings</i>
      </a>
@@ -28,6 +41,7 @@
 </template>
 
 <script>
+  import torrentProgress from './Header/TorrentProgress'
   const {ipcRenderer} = require('electron')
 
   export default {
@@ -37,6 +51,7 @@
         magnet: ''
       }
     },
+    components: { torrentProgress },
     methods: {
       addMagnet: function () {
         try {
@@ -45,6 +60,14 @@
         } catch (e) {
           console.log(e)
         }
+      },
+      updateTorrentStatus: function () {
+        ipcRenderer.send('updateTorrentStatus')
+      }
+    },
+    computed: {
+      torrentStatus () {
+        return this.$store.getters.torrentStatus
       }
     }
   }

@@ -57,3 +57,16 @@ ipcMain.on('playEnded', (event, args) => {
     event.sender.send('canPlay', [args[0], newIndex, title])
   }
 })
+
+ipcMain.on('updateTorrentStatus', (event, args) => {
+  var status = []
+  client.torrents.forEach(function (torrent) {
+    status.push({
+      title: torrent.name,
+      hash: torrent.infoHash,
+      progress: Math.floor(torrent.progress * 100)
+    })
+  })
+
+  event.sender.send('newStatus', status)
+})

@@ -5,7 +5,7 @@
       <a class=".primary-text-color" style="float: left; font-size: small;">{{ title }}</a>
       <i class="material-icons player-button play-button" >skip_previous</i>
       <i class="material-icons player-button play-button" v-on:click="togglePause">{{ playStatus }}</i>
-      <i class="material-icons player-button play-button" >skip_next</i>
+      <i class="material-icons player-button play-button" v-on:click="requestNext">skip_next</i>
       <i class="material-icons player-button play-button"
         style="float: right" v-on:click="toggleVolume">{{ volumeStatus }}</i>
     </div>

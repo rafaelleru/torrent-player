@@ -6,7 +6,7 @@
     <div>
       <i style="font-size: x-small;">{{ hash }}</i>
     </div>
-    <md-progress md-progress="progress"></md-progress>
+    <md-progress :md-progress="progress"></md-progress>
   </div>
 </template>
 

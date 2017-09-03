@@ -7,8 +7,9 @@
       <i class="material-icons play-button player-button" >skip_next</i>
       <i class="material-icons play-button player-button"
         style="float: right" v-on:click="toggleVolume">{{ volumeStatus }}</i>
-      <audio ref="audioTag" :src="source" autoplay="true" preload="none" @timeupdate="onTimeUpdateListener" v-on:ended="requestNext"></audio>
-      <a class=".primary-text-color" style="text-align: center; font-size: small;">{{ title }}</a>
+      <audio ref="audioTag" :src="source" autoplay="true" preload="none" @timeupdate="onTimeUpdateListener"
+        v-on:ended="requestNext"></audio>
+      <a class="primary-text-color song-title-tag">{{ title }}</a>
     </div>
     <!-- <progress min="0" max="1" value="0" ref="progress"></progress> -->
   </footer>
@@ -80,7 +81,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  height: 80px;
   width: 100%;
   background-color: #607D8B;
 }
@@ -101,5 +102,9 @@
   color: #2196F3
 }
 
-.primary-text-color    { color: #212121; }
+.primary-text-color{ color: #212121; }
+.song-title-tag{
+  text-align: center;
+  font-size: small;
+}
 </style>

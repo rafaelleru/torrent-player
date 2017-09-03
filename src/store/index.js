@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import playlist from './modules/playlist'
 import player from './modules/player'
+import torrentStatus from './modules/torrentStatus'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   // actions,
   modules: {
     playlist,
-    player
+    player,
+    torrentStatus
   }
 })

@@ -11,7 +11,7 @@ const mutations = {
   },
 
   updateTitle (state, title) {
-    state.title = title
+    state.title = title.replace('.mp3', '')
   },
 
   updateTorrentId (state, torrent) {

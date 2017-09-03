@@ -1,5 +1,5 @@
 <template>
-  <div id="progess" class="wrapper">
+  <div id="progess" class="wrapper status">
     <div>
       <i style="font-size: small;">{{ title }}</i>
     </div>
@@ -18,4 +18,7 @@
 </script>
 
 <style>
+.status {
+  margin: 2%;
+}
 </style>

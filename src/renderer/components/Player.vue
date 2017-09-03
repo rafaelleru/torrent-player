@@ -140,7 +140,7 @@
   color: #2196F3
 }
 
-.primary-text-color{ color: white; }
+.div-player .primary-text-color{ color: white; }
 .song-title-tag{
   margin: 0 0;
   font-size: small;

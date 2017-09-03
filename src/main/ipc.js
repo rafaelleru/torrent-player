@@ -13,7 +13,7 @@ ipcMain.on('addMagnet', (event, arg) => {
     torrent.files.forEach(function (file) {
       if (file.name.indexOf('.mp3') !== -1 || file.name.indexOf('.ogg') !== -1) {
         files.push({
-          title: file.name,
+          title: file.name.replace('.mp3', ''),
           torrent: torrent.infoHash,
           index: torrent.files.indexOf(file),
           duration: '--:--',

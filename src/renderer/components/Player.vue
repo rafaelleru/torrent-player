@@ -11,10 +11,11 @@
         <i class="material-icons player-button play-button" v-on:click="requestNext">skip_next</i>
       </div>
       <div class="derecha">
-        <i class="material-icons player-button play-button" v-on:click="toggleVolume">{{ volumeStatus }}</i>
+        <i class="material-icons player-button play-button" id="volumen-icon" v-on:click="toggleVolume">{{ volumeStatus }}</i>
+        <input type="range" id="volumen-slider" min="0" max="1" value="1" step="0.01" ref="slideVolume" v-on:change="updateVolume">
       </div>
-      <audio ref="audioTag" :src="source" autoplay="true" preload="none" @timeupdate="onTimeUpdateListener"
-        v-on:ended="requestNext"></audio>
+      <!--<audio ref="audioTag" :src="source" autoplay="true" preload="none" @timeupdate="onTimeUpdateListener"
+        v-on:ended="requestNext"></audio>-->
     </div>
     <audio ref="audioTag" :src="source" autoplay preload="none"
       @timeupdate="onTimeUpdateListener" v-on:ended="requestNext"></audio>
@@ -69,6 +70,11 @@
       requestNext: function () {
         ipcRenderer.send('playEnded', [this.$store.getters.torrentId,
           this.$store.getters.songIndex])
+      },
+      updateVolume: function () {
+        var volumeSlide = this.$refs.slideVolume
+        var audio = this.$refs.audioTag
+        audio.volume = volumeSlide.value
       }
     },
     computed: {
@@ -115,11 +121,11 @@
 .div-player .derecha{
   float: right;
   text-align: right;
-  width: 5%;
+  width: 10%;
 }
 .div-player .centro{
   float: left;
-  width: 45%;
+  width: 40%;
 }
 
 .player progress{
@@ -148,4 +154,14 @@
   text-transform: uppercase;
   font-size: 15px;
 }
+
+#volumen-icon{
+  display: inline;
+}
+#volumen-slider{
+  display: inline;
+  width: 70%;
+  vertical-align: middle;
+}
+
 </style>

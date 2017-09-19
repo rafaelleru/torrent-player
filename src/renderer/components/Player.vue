@@ -12,7 +12,8 @@
       </div>
       <div class="derecha">
         <i class="material-icons player-button play-button" id="volumen-icon" v-on:click="toggleVolume">{{ volumeStatus }}</i>
-        <input type="range" id="volumen-slider" min="0" max="1" value="1" step="0.01" ref="slideVolume" v-on:change="updateVolume">
+        <input type="range" id="volumen-slider" min="0" max="1" value="1" step="0.01" ref="slideVolume" v-on:input="updateVolume">
+	      <i style="float: left" id="volume-value">{{ value }}%</i>
       </div>
       <!--<audio ref="audioTag" :src="source" autoplay="true" preload="none" @timeupdate="onTimeUpdateListener"
         v-on:ended="requestNext"></audio>-->
@@ -33,7 +34,8 @@
         playing: false,
         playStatus: 'play_circle_outline',
         mute: false,
-        volumeStatus: 'volume_up'
+        volumeStatus: 'volume_up',
+        value: 100
         // source: 'http://nadikun.com/audio/suit-and-tie-oscar-wylde-remix.mp3'
       }
     },
@@ -74,6 +76,7 @@
       updateVolume: function () {
         var volumeSlide = this.$refs.slideVolume
         var audio = this.$refs.audioTag
+        this.value = volumeSlide.value * 100
         audio.volume = volumeSlide.value
       }
     },
@@ -116,12 +119,13 @@
 .div-player .izquierda{
   float: left;
   width: 50%;
-  margin-top: 5px;
+  margin-top: 15px;
 }
 .div-player .derecha{
   float: right;
-  text-align: right;
+  /* text-align: right; */
   width: 10%;
+  display: table-cell;
 }
 .div-player .centro{
   float: left;
@@ -133,7 +137,7 @@
 
 }
 .div-player .player-button{
-  color: white;
+  color: black;
 }
 .div-player .player-button:nth-child(even){
   font-size: 50px;
@@ -151,8 +155,7 @@
   margin: 0 0;
   font-size: small;
   font-weight: bold;
-  text-transform: uppercase;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 #volumen-icon{

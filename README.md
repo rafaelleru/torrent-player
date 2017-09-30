@@ -5,6 +5,10 @@
 
 > An electron-vue project
 
+---
+
+#### Description
+
 #### Build Setup
 
 ``` bash
@@ -25,6 +29,25 @@ npm test
 npm run lint
 
 ```
+
+#### Requirements
+
+Here you can find the requirements for running the program:
+
+```
+"async": "^2.5.0",
+"mp3-duration": "^1.0.10",
+"vue": "^2.3.3",
+"vue-electron": "^1.0.6",
+"vue-material": "^0.7.4",
+"vuex": "^2.4.0",
+"webtorrent": "^0.98.19"
+```
+
+You can install them with: ```npm install```.
+
+#### Author
+
 
 ---
 

@@ -1,6 +1,7 @@
 # torrent-player
 
 [![Join the chat at https://gitter.im/torrentPlayer/Lobby](https://badges.gitter.im/torrentPlayer/Lobby.svg)](https://gitter.im/torrentPlayer/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
 > An electron-vue project
 

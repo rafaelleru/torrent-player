@@ -11,9 +11,9 @@
         <i class="material-icons player-button play-button" v-on:click="requestNext">skip_next</i>
       </div>
       <div class="derecha">
-        <i class="material-icons player-button play-button" id="volumen-icon" v-on:click="toggleVolume">{{ volumeStatus }}</i>
+        <i style="float: left" id="volume-value">{{ value }}%</i>
+        <i class="material-icons play-button" id="volumen-icon" v-on:click="toggleVolume">{{ volumeStatus }}</i>
         <input type="range" id="volumen-slider" min="0" max="1" value="1" step="0.01" ref="slideVolume" v-on:input="updateVolume">
-	      <i style="float: left" id="volume-value">{{ value }}%</i>
       </div>
       <!--<audio ref="audioTag" :src="source" autoplay="true" preload="none" @timeupdate="onTimeUpdateListener"
         v-on:ended="requestNext"></audio>-->
@@ -76,7 +76,7 @@
       updateVolume: function () {
         var volumeSlide = this.$refs.slideVolume
         var audio = this.$refs.audioTag
-        this.value = volumeSlide.value * 100
+        this.value = Math.floor(volumeSlide.value * 100)
         audio.volume = volumeSlide.value
       }
     },
@@ -124,12 +124,12 @@
 .div-player .derecha{
   float: right;
   /* text-align: right; */
-  width: 10%;
-  display: table-cell;
+  width: 30%;
+  padding-top: 16px;
 }
 .div-player .centro{
   float: left;
-  width: 40%;
+  width: 20%;
 }
 
 .player progress{
@@ -165,6 +165,14 @@
   display: inline;
   width: 70%;
   vertical-align: middle;
+}
+#volumen-icon, #volumen-slider, #volume-value{
+  float:left;
+}
+
+#volume-value {
+  width: 35px;
+  margin-top: 3px;
 }
 
 </style>

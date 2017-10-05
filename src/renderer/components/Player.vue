@@ -1,6 +1,6 @@
 <template>
   <footer id="player" class="player">
-    <progress min="0" max="1" value="0" ref="progress"></progress>
+    <progress min="0" max="1" value="0" ref="progress" id="progressBar" v-on:click="progress"></progress>
     <div class="div-player">
       <div class="izquierda">
         <a class="primary-text-color"><p class="song-title-tag">{{ title }}</p></a>
@@ -78,6 +78,15 @@
         var audio = this.$refs.audioTag
         this.value = Math.floor(volumeSlide.value * 100)
         audio.volume = volumeSlide.value
+      },
+      progress: function (e) {
+        var outside = document.getElementById('player')
+        var x = Math.floor((e.offsetX / outside.offsetWidth) * 100)
+        var audio = this.$refs.audioTag
+        if (x >= 0 && x <= 100) {
+          audio.currentTime = x / 100 * audio.duration
+        }
+        document.getElementById('progressBar').innerHTML = x + '%'
       }
     },
     computed: {
@@ -146,8 +155,8 @@
   color:#212121;
 }
 
-.player-button+:hover{
-  color: #2196F3
+.player-button:hover{
+  color: #2196F3 !important
 }
 
 .div-player .primary-text-color{ color: white; }
@@ -161,6 +170,11 @@
 #volumen-icon{
   display: inline;
 }
+
+#volumen-icon:hover{
+  color: #2196F3
+}
+
 #volumen-slider{
   display: inline;
   width: 70%;

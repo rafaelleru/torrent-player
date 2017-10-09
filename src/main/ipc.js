@@ -79,6 +79,22 @@ ipcMain.on('playEnded', (event, args) => {
   }
 })
 
+ipcMain.on('playPrevious', (event, args) => {
+  var title
+  var newIndex = args[1] - 1
+  if (torrentId !== args[0]) {
+    server.close()
+    server = client.get(args[0]).createServer()
+    server.listen(9999)
+    title = client.get(args[0]).files[args[1]].name
+    event.sender.send('canPlay', args.concat([title]))
+  } else {
+    title = client.get(args[0]).files[args[1] + 1].name
+    console.log(args.concat([title]))
+    event.sender.send('canPlay', [args[0], newIndex, title])
+  }
+})
+
 ipcMain.on('updateTorrentStatus', (event, args) => {
   var status = []
   client.torrents.forEach(function (torrent) {

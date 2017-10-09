@@ -6,7 +6,7 @@
         <a class="primary-text-color"><p class="song-title-tag">{{ title }}</p></a>
       </div>
       <div class="centro">
-        <i class="material-icons player-button play-button" >skip_previous</i>
+        <i class="material-icons player-button play-button" v-on:click="requestPrevious">skip_previous</i>
         <i class="material-icons player-button play-button" v-on:click="togglePause">{{ playStatus }}</i>
         <i class="material-icons player-button play-button" v-on:click="requestNext">skip_next</i>
       </div>
@@ -68,6 +68,10 @@
         var audio = this.$refs.audioTag
         var currentProgress = (audio.currentTime / audio.duration)
         progressbar.value = currentProgress
+      },
+      requestPrevious: function () {
+        ipcRenderer.send('playPrevious', [this.$store.getters.torrentId,
+          this.$store.getters.songIndex])
       },
       requestNext: function () {
         ipcRenderer.send('playEnded', [this.$store.getters.torrentId,

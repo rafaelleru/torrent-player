@@ -44,6 +44,7 @@ ipcMain.on('requestPlay', (event, args) => {
     server.close()
     server = client.get(args[0]).createServer()
     server.listen(9999)
+    torrentId = args[0]
     event.sender.send('canPlay', args)
   } else {
     event.sender.send('canPlay', args)
@@ -107,3 +108,5 @@ ipcMain.on('updateTorrentStatus', (event, args) => {
 
   event.sender.send('newStatus', status)
 })
+
+module.exports = client

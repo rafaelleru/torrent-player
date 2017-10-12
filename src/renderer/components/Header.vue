@@ -94,9 +94,10 @@
   }
 
   .inputfile {
-  	width: 0.1px;
+  	/*width: 0.1px;
   	height: 0.1px;
-  	opacity: 0;
+  	opacity: 0;*/
+    display: none;
   	overflow: hidden;
   	position: absolute;
   	z-index: -1;
@@ -176,4 +177,7 @@
   .par                   { background-color: #CFD8DC; }
   .impar                 { background-color: #ECEFF1 }
 
+.md-menu{
+  margin-top: -6px; 
+}
 </style>

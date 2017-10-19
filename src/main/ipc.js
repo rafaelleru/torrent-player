@@ -49,26 +49,25 @@ ipcMain.on('requestPlay', (event, args) => {
   } else {
     event.sender.send('canPlay', args)
   }
+
+  currentFileOnPlay = {
+    title: args[2],
+    torrent: args[0],
+    index: args[1]
+  }
 })
 
 ipcMain.on('playEnded', (event, args) => {
-  console.log('end' + args)
   var title
   var newIndex = args[1] + 1
-  // if (torrentId !== args[0]) {
-  //   server.close()
-  //   server = client.get(args[0]).createServer()
-  //   server.listen(9999)
-  //   title = client.get(args[0]).files[args[1]].name
-  //   event.sender.send('canPlay', args.concat([title]))
-  // } else {
-  //   title = client.get(args[0]).files[args[1] + 1].name
-  //   console.log(args.concat([title]))
-  //   event.sender.send('canPlay', [args[0], newIndex, title])
-  // }
-
-  if (currentFileOnPlay.torrent === filesToPlay[filesToPlay.indexOf(currentFileOnPlay) + 1]) {
-    title = client.get(args[0]).files[args[1] + 1].name
+  console.log(filesToPlay[filesToPlay.indexOf(currentFileOnPlay) + 1])
+  if (filesToPlay[filesToPlay.indexOf(currentFileOnPlay) + 1].torrent === args[0]) {
+    title = filesToPlay[filesToPlay.indexOf(currentFileOnPlay) + 1].title
+    currentFileOnPlay = {
+      title: title,
+      torrent: args[0],
+      index: args[1]
+    }
     event.sender.send('canPlay', [args[0], newIndex, title])
   } else {
     currentFileOnPlay = filesToPlay[filesToPlay.indexOf(currentFileOnPlay) + 1]

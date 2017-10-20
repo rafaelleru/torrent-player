@@ -8,18 +8,20 @@
 </template>
 
 <script>
-  import LandingPage from '@/components/LandingPage'
+  import dragDrop fom 'drag-drop'
   import SongList from '@/components/SongList.vue'
   import Player from '@/components/Player.vue'
   import topBar from '@/components/Header.vue'
 
-  export default {
+ export default {
     name: 'torrent-player',
     components: {
-      LandingPage,
       'playlist': SongList,
       Player,
       topBar
+    },
+    mounted(){
+      dragDrop() //do stuff with dragged files
     }
   }
 </script>

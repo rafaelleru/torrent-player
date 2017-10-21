@@ -76,12 +76,12 @@
         progressbar.value = currentProgress
       },
       requestPrevious: function () {
-        ipcRenderer.send('playPrevious', [this.$store.getters.torrentId,
-          this.$store.getters.songIndex])
+        var prevSongInfo = this.$store.getters.prevSong
+        ipcRenderer.send('requestPlay', prevSongInfo)
       },
       requestNext: function () {
-        ipcRenderer.send('playEnded', [this.$store.getters.torrentId,
-          this.$store.getters.songIndex])
+        var nextSongInfo = this.$store.getters.nextSong
+        ipcRenderer.send('requestPlay', nextSongInfo)
       },
       updateVolume: function (amount = 0) {
         const volume = Math.floor(this.$refs.slideVolume.value * 100)

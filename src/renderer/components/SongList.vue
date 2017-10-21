@@ -1,25 +1,64 @@
 <template>
   <div id="playlist" class="playlist">
-    <div
-      is="song"
-      v-for="song in songs"
-      v-bind:title="song.title"
-      v-bind:torrent="song.torrent"
-      v-bind:index="song.index"
-      v-bind:duration="song.duration">
-    </div>
+    <draggable v-model="songs" @start="isDragging=true" @end="isDragging=false">
+      <div
+	      is="song"
+      	v-for="song in songs"
+      	v-bind:title="song.title"
+      	v-bind:torrent="song.torrent"
+      	v-bind:index="song.index"
+      	v-bind:duration="song.duration">
+      </div>
+    </draggable>
   </div>
 </template>
 
 <script>
 import Song from './SongList/Song'
+import draggable from 'vuedraggable'
 
 export default {
   name: 'playlist',
-  components: { Song },
+  components: {
+    Song,
+    draggable
+  },
+  data () {
+    return {
+      isDragging: false
+    }
+  },
+  mathods: {
+    onMove: function ({relatedContext, draggedContext}) {
+      const relatedElement = relatedContext.element
+      const draggedElement = draggedContext.element
+      return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+    }
+  },
   computed: {
-    songs () {
-      return this.$store.getters.songs
+    dragOptions () {
+      return {
+        animation: 0,
+        group: 'description',
+        disabled: !this.editable,
+        ghostClass: 'ghost'
+      }
+    },
+    songs: {
+      get () {
+        return this.$store.getters.songs
+      }
+    }
+  },
+  watch: {
+    isDragging (newValue) {
+      if (newValue) {
+        this.delayedDragging = true
+        return
+      }
+      this.$nextTick(() => {
+        this.delayedDragging = false
+      })
     }
   }
 }

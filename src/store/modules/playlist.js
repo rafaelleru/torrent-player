@@ -11,6 +11,9 @@ const getters = {
 const mutations = {
   addSong (state, newSong) {
     state.songs.push(newSong)
+  },
+  updateSongList (state, s) {
+    state.songs = [...s]
   }
 }
 

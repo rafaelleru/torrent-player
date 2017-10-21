@@ -47,6 +47,9 @@ export default {
     songs: {
       get () {
         return this.$store.getters.songs
+      },
+      set (value) {
+        this.$store.commit('updateSongList', value)
       }
     }
   },

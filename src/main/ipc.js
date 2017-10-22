@@ -7,7 +7,6 @@ const client = new WebTorrent()
 var server = null
 var torrentId = null
 var filesToPlay = []
-var currentFileOnPlay = null
 
 ipcMain.on('addMagnet', (event, arg) => {
   // TODO: Code duplicated.

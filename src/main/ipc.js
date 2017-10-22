@@ -29,8 +29,33 @@ ipcMain.on('addMagnet', (event, arg) => {
         })
       }
     })
-
     event.sender.send('updateSongs', files)
+  })
+})
+
+ipcMain.on('addFiles', (event, files) => {
+  files.forEach(function (file) {
+    client.add(file, function (torrent) {
+      var files = []
+      torrent.files.forEach(function (file) {
+        if (file.name.indexOf('.mp3') !== -1 || file.name.indexOf('.ogg') !== -1 ||
+            file.name.indexOf('.flac') !== -1) {
+          files.push({
+            title: file.name.replace('.mp3', ''),
+            torrent: torrent.infoHash,
+            index: torrent.files.indexOf(file),
+            duration: '--:--',
+            playing: 'false'
+          })
+          filesToPlay.push({
+            title: file.name.replace('.mp3', ''),
+            torrent: torrent.infoHash,
+            index: torrent.files.indexOf(file)
+          })
+        }
+      })
+      event.sender.send('updateSongs', files)
+    })
   })
 })
 

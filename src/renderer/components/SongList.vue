@@ -16,6 +16,8 @@
 <script>
 import Song from './SongList/Song'
 import draggable from 'vuedraggable'
+const dragDrop = require('drag-drop/buffer')
+const {ipcRenderer} = require('electron')
 
 export default {
   name: 'playlist',
@@ -63,6 +65,9 @@ export default {
         this.delayedDragging = false
       })
     }
+  },
+  mounted: function () {
+    dragDrop('#playlist', function (files) { ipcRenderer.send('addFiles', files) })
   }
 }
 </script>

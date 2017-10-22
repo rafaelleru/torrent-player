@@ -2,7 +2,7 @@
   <header id="header" class="header dark-primary-color">
   <link rel="stylesheet" href="../../node_modules/vue-material/dist/vue-material.css">
   <nav class="inner" style="vertical-align: middle">
-     <a style="display: inline-block; font-size: x-large; float: left">Torrent Player</a>
+     <a style="display: inline-block; font-size: x-large; float: left" class="title">Torrent Player</a>
      <a style="display: inline-block; vertical-align: middle;">
        <input id="magnet-input"
          v-model="magnet"
@@ -11,7 +11,7 @@
          style="vertical-align: middle"
          >
      </a>
-     <input type="file" name="file" id="file" class="inputfile utility-button" />
+     <input type="file" name="file" id="file" class="inputfile utility-button"/>
      <label for="file" class="utility-button">
        <i class="material-icons">folder_open</i>
      </label>
@@ -33,25 +33,41 @@
      <a class="utility-button">
        <i class="material-icons">settings</i>
      </a>
-     <a class="utility-button">
-       <i class="material-icons">search</i>
-     </a>
+     <md-menu class="utility-button" md-direction="top left" md-size="5">
+       <i class="material-icons" md-menu-trigger>search</i>
+       <md-menu-content>
+         <div class="searchInput">
+         <md-input-container md-inline md-clearable>
+           <label>search</label>
+           <md-input v-model="searchQuery"></md-input>
+         </md-input-container>
+       </div>
+         <md-menu-item
+          is="search-result"
+          v-for="r in results"
+          v-bind:title="r.title"
+          v-bind:torrent="r.torrent">
+        </md-menu-item>
+       </md-menu-content>
+     </md-menu>
    </nav>
   </header>
 </template>
 
 <script>
   import torrentProgress from './Header/TorrentProgress'
+  import searchResult from './Header/SearchResult'
   const {ipcRenderer} = require('electron')
 
   export default {
     name: 'top-bar',
     data: function () {
       return {
-        magnet: ''
+        magnet: '',
+        searchQuery: ''
       }
     },
-    components: { torrentProgress },
+    components: { torrentProgress, searchResult },
     methods: {
       addMagnet: function () {
         try {
@@ -68,6 +84,13 @@
     computed: {
       torrentStatus () {
         return this.$store.getters.torrentStatus
+      },
+      results () {
+        if (this.searchQuery === '') {
+          return []
+        } else {
+          return this.$store.getters.songs.filter(song => song.title.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1)
+        }
       }
     }
   }
@@ -122,14 +145,19 @@
     float: right;
     vertical-align: middle;
     background-color: transparent;
-    color: white;
+    color: white !important;
     cursor: pointer;
   }
+
 
   .utility-button:focus + a,
   .utility-button:hover {
       background-color: transparent;
       color: #616161;
+  }
+
+  .title {
+    color: white !important;
   }
 
 
@@ -166,18 +194,24 @@
       color: #616161;
   }
 
-    .dark-primary-color    { background: #1976D2; }
+  .dark-primary-color    { background: #1976D2; }
   .default-primary-color { background: #2196F3; }
   .light-primary-color   { background: #BBDEFB; }
   .text-primary-color    { color: #FFFFFF; }
   .accent-color          { background: #607D8B; }
-  .primary-text-color    { color: #212121; }
+  .primary-text-color    { color: #212121 !important; }
   .secondary-text-color  { color: #757575; }
   .divider-color         { border-color: #BDBDBD; }
   .par                   { background-color: #CFD8DC; }
   .impar                 { background-color: #ECEFF1 }
 
 .md-menu{
-  margin-top: -6px; 
+  margin-top: -6px;
+}
+
+.searchInput{
+  margin-left: 5%;
+  margin-right: 5%;
+  border-radius: 10px;
 }
 </style>

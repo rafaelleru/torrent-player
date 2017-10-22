@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <landing-page></landing-page> -->
     <top-bar></top-bar>
     <playlist></playlist>
     <player></player>
@@ -8,22 +7,18 @@
 </template>
 
 <script>
-  import dragDrop fom 'drag-drop'
-  import SongList from '@/components/SongList.vue'
-  import Player from '@/components/Player.vue'
-  import topBar from '@/components/Header.vue'
+import topBar from '@/components/Header.vue'
+import SongList from '@/components/SongList.vue'
+import Player from '@/components/Player.vue'
 
- export default {
-    name: 'torrent-player',
-    components: {
-      'playlist': SongList,
-      Player,
-      topBar
-    },
-    mounted(){
-      dragDrop() //do stuff with dragged files
-    }
+export default {
+  name: 'torrent-player',
+  components: {
+    'playlist': SongList,
+    Player,
+    topBar
   }
+}
 </script>
 
 <style>

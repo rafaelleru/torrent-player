@@ -11,7 +11,7 @@
 
       </nav>
     </header>
-    <form novalidate @submit.stop.prevent="submit">\
+    <form novalidate @submit.stop.prevent="submit">
       <md-input-container>
         <label>Download Location</label>
         <md-input v-model="savePath"></md-input>

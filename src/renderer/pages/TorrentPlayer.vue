@@ -1,27 +1,27 @@
 <template>
   <div id="app">
-    <!-- <landing-page></landing-page> -->
     <top-bar></top-bar>
+    <drag-dialog></drag-dialog>
     <playlist></playlist>
     <player></player>
   </div>
 </template>
 
 <script>
-  import LandingPage from '../components/LandingPage'
-  import SongList from '../components/SongList.vue'
-  import Player from '../components/Player.vue'
-  import topBar from '../components/Header.vue'
+import topBar from '../components/Header.vue'
+import SongList from '../components/SongList.vue'
+import Player from '../components/Player.vue'
+import DragDialog from '../components/DragDialog.vue'
 
-  export default {
-    name: 'torrent-player',
-    components: {
-      LandingPage,
-      'playlist': SongList,
-      Player,
-      topBar
-    }
+export default {
+  name: 'torrent-player',
+  components: {
+    'playlist': SongList,
+    Player,
+    topBar,
+    DragDialog
   }
+}
 </script>
 
 <style>

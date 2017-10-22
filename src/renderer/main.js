@@ -9,14 +9,23 @@ Vue.config.productionTip = false
 
 // Vue Material: http://vuematerial.io
 var VueMaterial = require('vue-material')
+var VueRouter = require('vue-router')
 Vue.use(VueMaterial)
+Vue.use(VueRouter)
 
-// Vue.use(VueMaterial)
+const routes = [
+  { path: '/', component: require('./pages/TorrentPlayer.vue') },
+  { path: '/settings', component: require('./pages/Settings.vue') }
+]
 
-/* eslint-disable no-new */
+const router = new VueRouter({
+  routes
+})
+
 new Vue({
   store,
   ipc,
+  router,
   components: { App },
   template: '<App/>'
 }).$mount('#app')

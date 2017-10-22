@@ -30,17 +30,11 @@
          </md-menu-item>
        </md-menu-content>
      </md-menu>
-     <md-menu class="utility-button" md-direction="bottom left" md-size="7">
-        <md-button md-menu-trigger class="md-icon-button"
-           v-on:click="openSettings">
-           <a class="utility-button">
-             <i class="material-icons">settings</i>
-           </a>
-        </md-button>
-        <md-menu-content>
-          <settings></settings>
-        </md-menu-content>
-      </md-menu>
+     <router-link to="/settings">
+         <a class="utility-button">
+           <i class="material-icons">settings</i>
+         </a>
+     </router-link>
      <a class="utility-button">
        <i class="material-icons">search</i>
      </a>
@@ -50,7 +44,6 @@
 
 <script>
   import torrentProgress from './Header/TorrentProgress'
-  import Settings from '@/components/Settings.vue'
   const {ipcRenderer} = require('electron')
 
   export default {
@@ -61,8 +54,7 @@
       }
     },
     components: {
-      torrentProgress,
-      Settings
+      torrentProgress
     },
     methods: {
       addMagnet: function () {

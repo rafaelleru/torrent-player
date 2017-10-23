@@ -1,11 +1,6 @@
 <template>
   <footer id="player" class="player">
-    <!--<progress min="0" max="1" value="0" ref="progress" id="progressBar" v-on:click="progress"></progress>-->
-    <div class="progressbar" id="background"  v-on:click="progress" @mousedown="mouseDown" @mousemove="mouseMove" @mouseup="mouseUp">
-      <div class="actualprogress" id="progressBar" ref="progress">
-        <div class="bolita" id="bola"></div>
-      </div>
-    </div>
+    <progress min="0" max="1" value="0" ref="progress" id="progressBar" v-on:click="progress"></progress>
     <div class="div-player">
       <div class="izquierda">
         <a class="primary-text-color"><p class="song-title-tag">{{ title }}</p></a>
@@ -18,7 +13,7 @@
       <div class="derecha">
         <i style="float: left" id="volume-value">{{ value }}%</i>
         <i class="material-icons play-button" id="volumen-icon" v-on:click="toggleVolume">{{ volumeStatus }}</i>
-        <input type="range" id="volumen-slider" min="0" max="1" value="1" step="0.01" ref="slideVolume" v-on:input="updateVolume()">
+        <input type="range" id="volumen-slider" min="0" max="1" value="1" step="0.01" ref="slideVolume" v-on:input="updateVolume">
       </div>
       <!--<audio ref="audioTag" :src="source" autoplay="true" preload="none" @timeupdate="onTimeUpdateListener"
         v-on:ended="requestNext"></audio>-->
@@ -40,16 +35,9 @@
         playStatus: 'play_circle_outline',
         mute: false,
         volumeStatus: 'volume_up',
-        value: 100,
-        entra: false
+        value: 100
         // source: 'http://nadikun.com/audio/suit-and-tie-oscar-wylde-remix.mp3'
       }
-    },
-    created: function () {
-      window.addEventListener('keyup', this.handleKeyPress)
-    },
-    beforeDestroy: function () {
-      window.removeEventListener('keyup', this.handleKeyPress)
     },
     methods: {
       togglePause: function () {
@@ -78,84 +66,31 @@
       onTimeUpdateListener: function () {
         var progressbar = this.$refs.progress
         var audio = this.$refs.audioTag
-        var currentProgress = (audio.currentTime / audio.duration) * 100
-        /* console.log(currentProgress) */
-        progressbar.style.width = currentProgress + '%'
+        var currentProgress = (audio.currentTime / audio.duration)
+        progressbar.value = currentProgress
       },
       requestPrevious: function () {
-        var prevSongInfo = this.$store.getters.prevSong
-        ipcRenderer.send('requestPlay', prevSongInfo)
+        ipcRenderer.send('playPrevious', [this.$store.getters.torrentId,
+          this.$store.getters.songIndex])
       },
       requestNext: function () {
-        var nextSongInfo = this.$store.getters.nextSong
-        ipcRenderer.send('requestPlay', nextSongInfo)
+        ipcRenderer.send('playEnded', [this.$store.getters.torrentId,
+          this.$store.getters.songIndex])
       },
-      updateVolume: function (amount = 0) {
-        const volume = Math.floor(this.$refs.slideVolume.value * 100)
-        const audio = this.$refs.audioTag
-        const updatedVolume = volume + amount
-        let newVolume = updatedVolume
-        if (updatedVolume > 100) {
-          newVolume = 100
-        } else if (this.value === 0 && updatedVolume <= 0) {
-          newVolume = 0
-        } else if (this.value === 0 && updatedVolume > 0) {
-          this.toggleVolume()
-        } else if (updatedVolume <= 0) {
-          newVolume = 0
-          this.toggleVolume()
-        }
-        this.value = newVolume
-        audio.volume = newVolume / 100
-        this.$refs.slideVolume.value = newVolume / 100
+      updateVolume: function () {
+        var volumeSlide = this.$refs.slideVolume
+        var audio = this.$refs.audioTag
+        this.value = Math.floor(volumeSlide.value * 100)
+        audio.volume = volumeSlide.value
       },
       progress: function (e) {
-        var outside = document.getElementById('background')
+        var outside = document.getElementById('player')
         var x = Math.floor((e.offsetX / outside.offsetWidth) * 100)
         var audio = this.$refs.audioTag
-        if (x > 0 && x <= 100) {
+        if (x >= 0 && x <= 100) {
           audio.currentTime = x / 100 * audio.duration
-          this.$refs.progress.style.width = x + '%'
-        }
-      },
-      mouseDown: function () {
-        if (!this.entra) {
-          this.entra = true
-        }
-      },
-      mouseMove: function (e) {
-        if (this.entra) {
-          this.progress(e)
-        }
-      },
-      mouseUp: function () {
-        if (this.entra) {
-          this.entra = false
         }
         document.getElementById('progressBar').innerHTML = x + '%'
-      },
-      handleKeyPress: function (e) {
-        const code = e.which
-        const ctrl = e.ctrlKey
-        switch (code) {
-          case 32:
-            this.togglePause()
-            break
-          case 37:
-            if (ctrl) this.requestPrevious()
-            break
-          case 38:
-            if (ctrl) this.updateVolume(10)
-            break
-          case 39:
-            if (ctrl) this.requestNext()
-            break
-          case 40:
-            if (ctrl) this.updateVolume(-10)
-            break
-          default:
-            break
-        }
       }
     },
     computed: {
@@ -345,40 +280,5 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
   background: #2196F3;
 }
-.progressbar{
-  width: 100%;
-  cursor: pointer;
-  background-color: grey;
-  height: 8px;
-  display: flex;
-  border-radius: 2px;
-  z-index: 1;
-}
-.actualprogress{
-  width: 0%;
-  height: 6px;
-  display: flex;
-  background-color: #2196F3;
-  z-index: 2;
-  border-radius: 2px;
-  margin-top:1px;
-  position: relative;
-}
-.bolita{
-  background-color: green;
-  border-radius: 50%;
-  width: 12px;
-  height: 12px;
-  z-index: 3;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
-  /*transform: scale(0);*/
-  transition: transform .1s cubic-bezier(.3,0,.7,1);
-  position: absolute;
-  left: 99.5%;
-  top: -3px;
-  display: none;
-}
-.progressbar:hover > #progressBar #bola{
-  display: inline;
-}
+
 </style>

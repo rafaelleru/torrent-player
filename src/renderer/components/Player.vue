@@ -45,6 +45,12 @@
         // source: 'http://nadikun.com/audio/suit-and-tie-oscar-wylde-remix.mp3'
       }
     },
+    created: function () {
+      window.addEventListener('keyup', this.handleKeyPress)
+    },
+    beforeDestroy: function () {
+      window.removeEventListener('keyup', this.handleKeyPress)
+    },
     methods: {
       togglePause: function () {
         var audio = this.$refs.audioTag
@@ -84,11 +90,24 @@
         ipcRenderer.send('playEnded', [this.$store.getters.torrentId,
           this.$store.getters.songIndex])
       },
-      updateVolume: function () {
-        var volumeSlide = this.$refs.slideVolume
-        var audio = this.$refs.audioTag
-        this.value = Math.floor(volumeSlide.value * 100)
-        audio.volume = volumeSlide.value
+      updateVolume: function (amount = 0) {
+        const volume = Math.floor(this.$refs.slideVolume.value * 100)
+        const audio = this.$refs.audioTag
+        const updatedVolume = volume + amount
+        let newVolume = updatedVolume
+        if (updatedVolume > 100) {
+          newVolume = 100
+        } else if (this.value === 0 && updatedVolume <= 0) {
+          newVolume = 0
+        } else if (this.value === 0 && updatedVolume > 0) {
+          this.toggleVolume()
+        } else if (updatedVolume <= 0) {
+          newVolume = 0
+          this.toggleVolume()
+        }
+        this.value = newVolume
+        audio.volume = newVolume / 100
+        this.$refs.slideVolume.value = newVolume / 100
       },
       progress: function (e) {
         var outside = document.getElementById('background')
@@ -112,6 +131,29 @@
       mouseUp: function () {
         if (this.entra) {
           this.entra = false
+        }
+      },
+      handleKeyPress: function (e) {
+        const code = e.which
+        const ctrl = e.ctrlKey
+        switch (code) {
+          case 32:
+            this.togglePause()
+            break
+          case 37:
+            if (ctrl) this.requestPrevious()
+            break
+          case 38:
+            if (ctrl) this.updateVolume(10)
+            break
+          case 39:
+            if (ctrl) this.requestNext()
+            break
+          case 40:
+            if (ctrl) this.updateVolume(-10)
+            break
+          default:
+            break
         }
       }
     },

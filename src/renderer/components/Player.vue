@@ -132,7 +132,6 @@
         if (this.entra) {
           this.entra = false
         }
-        document.getElementById('progressBar').innerHTML = x + '%'
       },
       handleKeyPress: function (e) {
         const code = e.which
@@ -365,12 +364,12 @@ input[type=range]:focus::-ms-fill-upper {
   position: relative;
 }
 .bolita{
-  background-color: green;
+  background-color: #2196F3;
   border-radius: 50%;
   width: 12px;
   height: 12px;
   z-index: 3;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
+  /*box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);*/
   /*transform: scale(0);*/
   transition: transform .1s cubic-bezier(.3,0,.7,1);
   position: absolute;

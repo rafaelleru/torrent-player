@@ -132,7 +132,6 @@
         if (this.entra) {
           this.entra = false
         }
-        document.getElementById('progressBar').innerHTML = x + '%'
       },
       handleKeyPress: function (e) {
         const code = e.which

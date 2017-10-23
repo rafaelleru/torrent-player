@@ -30,9 +30,11 @@
          </md-menu-item>
        </md-menu-content>
      </md-menu>
-     <a class="utility-button">
-       <i class="material-icons">settings</i>
-     </a>
+     <router-link to="/settings">
+         <a class="utility-button">
+           <i class="material-icons">settings</i>
+         </a>
+     </router-link>
      <md-menu class="utility-button" md-direction="top left" md-size="5">
        <i class="material-icons" md-menu-trigger>search</i>
        <md-menu-content>
@@ -79,6 +81,9 @@
       },
       updateTorrentStatus: function () {
         ipcRenderer.send('updateTorrentStatus')
+      },
+      openSettings: function () {
+        ipcRenderer.send('openSettings')
       }
     },
     computed: {

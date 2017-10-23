@@ -6,12 +6,15 @@ const client = new WebTorrent()
 // const async = require('async')
 var server = null
 var torrentId = null
+var filesToPlay = []
 
 ipcMain.on('addMagnet', (event, arg) => {
+  // TODO: Code duplicated.
   client.add(arg, function (torrent) {
     var files = []
     torrent.files.forEach(function (file) {
-      if (file.name.indexOf('.mp3') !== -1 || file.name.indexOf('.ogg') !== -1) {
+      if (file.name.indexOf('.mp3') !== -1 || file.name.indexOf('.ogg') !== -1 ||
+          file.name.indexOf('.flac') !== -1) {
         files.push({
           title: file.name.replace('.mp3', ''),
           torrent: torrent.infoHash,
@@ -19,58 +22,58 @@ ipcMain.on('addMagnet', (event, arg) => {
           duration: '--:--',
           playing: 'false'
         })
+        filesToPlay.push({
+          title: file.name.replace('.mp3', ''),
+          torrent: torrent.infoHash,
+          index: torrent.files.indexOf(file)
+        })
       }
     })
     event.sender.send('updateSongs', files)
   })
 })
 
-ipcMain.on('requestPlay', (event, args) => {
+ipcMain.on('addFiles', (event, files) => {
+  files.forEach(function (file) {
+    client.add(file, function (torrent) {
+      var files = []
+      torrent.files.forEach(function (file) {
+        if (file.name.indexOf('.mp3') !== -1 || file.name.indexOf('.ogg') !== -1 ||
+            file.name.indexOf('.flac') !== -1) {
+          files.push({
+            title: file.name.replace('.mp3', ''),
+            torrent: torrent.infoHash,
+            index: torrent.files.indexOf(file),
+            duration: '--:--',
+            playing: 'false'
+          })
+          filesToPlay.push({
+            title: file.name.replace('.mp3', ''),
+            torrent: torrent.infoHash,
+            index: torrent.files.indexOf(file)
+          })
+        }
+      })
+      event.sender.send('updateSongs', files)
+    })
+  })
+})
+
+ipcMain.on('requestPlay', (event, song) => {
+  console.log(song)
   if (server === null) {
-    server = client.get(args[0]).createServer()
+    server = client.get(song.torrent).createServer()
     server.listen(9999)
-    torrentId = args[0]
-    event.sender.send('canPlay', args)
-  } else if (torrentId !== args[0]) {
+    torrentId = song.torrent
+    event.sender.send('canPlay', song)
+  } else if (torrentId !== song.torrent) {
     server.close()
-    server = client.get(args[0]).createServer()
+    server = client.get(song.torrent).createServer()
     server.listen(9999)
-    event.sender.send('canPlay', args)
+    torrentId = song.torrent
+    event.sender.send('canPlay', song)
   } else {
-    event.sender.send('canPlay', args)
-  }
-})
-
-ipcMain.on('playEnded', (event, args) => {
-  console.log('end' + args)
-  var title
-  var newIndex = args[1] + 1
-  if (torrentId !== args[0]) {
-    server.close()
-    server = client.get(args[0]).createServer()
-    server.listen(9999)
-    title = client.get(args[0]).files[args[1]].name
-    event.sender.send('canPlay', args.concat([title]))
-  } else {
-    title = client.get(args[0]).files[args[1] + 1].name
-    console.log(args.concat([title]))
-    event.sender.send('canPlay', [args[0], newIndex, title])
-  }
-})
-
-ipcMain.on('playPrevious', (event, args) => {
-  var title
-  var newIndex = args[1] - 1
-  if (torrentId !== args[0]) {
-    server.close()
-    server = client.get(args[0]).createServer()
-    server.listen(9999)
-    title = client.get(args[0]).files[args[1]].name
-    event.sender.send('canPlay', args.concat([title]))
-  } else {
-    title = client.get(args[0]).files[args[1] + 1].name
-    console.log(args.concat([title]))
-    event.sender.send('canPlay', [args[0], newIndex, title])
+    event.sender.send('canPlay', song)
   }
 })
 
@@ -86,3 +89,31 @@ ipcMain.on('updateTorrentStatus', (event, args) => {
 
   event.sender.send('newStatus', status)
 })
+
+ipcMain.on('dragedTorrent', (event, args) => {
+  args.forEach(function (file) {
+    client.add(file, function (torrent) {
+      var files = []
+      torrent.files.forEach(function (file) {
+        if (file.name.indexOf('.mp3') !== -1 || file.name.indexOf('.ogg') !== -1 ||
+            file.name.indexOf('.flac') !== -1) {
+          files.push({
+            title: file.name.replace('.mp3', ''),
+            torrent: torrent.infoHash,
+            index: torrent.files.indexOf(file),
+            duration: '--:--',
+            playing: 'false'
+          })
+          filesToPlay.push({
+            title: file.name.replace('.mp3', ''),
+            torrent: torrent.infoHash,
+            index: torrent.files.indexOf(file)
+          })
+        }
+      })
+
+      event.sender.send('updateSongs', files)
+    })
+  })
+})
+module.exports = client

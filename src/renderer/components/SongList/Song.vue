@@ -18,7 +18,7 @@
 
   export default {
     name: 'song',
-    props: ['title', 'torrent', 'index', 'duration'],
+    props: ['title', 'torrent', 'index', 'duration', 'playing'],
     data: function () {
       return {
         play: false,
@@ -27,7 +27,7 @@
     },
     methods: {
       requestPlay: function () {
-        ipcRenderer.send('requestPlay', [this.torrent, this.index, this.title])
+        ipcRenderer.send('requestPlay', this.$store.getters.songs.find(i => i.title === this.title))
       }
     }
   }

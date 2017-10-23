@@ -1,26 +1,73 @@
 <template>
   <div id="playlist" class="playlist">
-    <div
-      is="song"
-      v-for="song in songs"
-      v-bind:title="song.title"
-      v-bind:torrent="song.torrent"
-      v-bind:index="song.index"
-      v-bind:duration="song.duration">
-    </div>
+    <draggable v-model="songs" @start="isDragging=true" @end="isDragging=false">
+      <div
+	      is="song"
+      	v-for="song in songs"
+      	v-bind:title="song.title"
+      	v-bind:torrent="song.torrent"
+      	v-bind:index="song.index"
+      	v-bind:duration="song.duration">
+      </div>
+    </draggable>
   </div>
 </template>
 
 <script>
 import Song from './SongList/Song'
+import draggable from 'vuedraggable'
+const dragDrop = require('drag-drop/buffer')
+const {ipcRenderer} = require('electron')
 
 export default {
   name: 'playlist',
-  components: { Song },
-  computed: {
-    songs () {
-      return this.$store.getters.songs
+  components: {
+    Song,
+    draggable
+  },
+  data () {
+    return {
+      isDragging: false
     }
+  },
+  mathods: {
+    onMove: function ({relatedContext, draggedContext}) {
+      const relatedElement = relatedContext.element
+      const draggedElement = draggedContext.element
+      return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+    }
+  },
+  computed: {
+    dragOptions () {
+      return {
+        animation: 0,
+        group: 'description',
+        disabled: !this.editable,
+        ghostClass: 'ghost'
+      }
+    },
+    songs: {
+      get () {
+        return this.$store.getters.songs
+      },
+      set (value) {
+        this.$store.commit('updateSongList', value)
+      }
+    }
+  },
+  watch: {
+    isDragging (newValue) {
+      if (newValue) {
+        this.delayedDragging = true
+        return
+      }
+      this.$nextTick(() => {
+        this.delayedDragging = false
+      })
+    }
+  },
+  mounted: function () {
+    dragDrop('#playlist', function (files) { ipcRenderer.send('addFiles', files) })
   }
 }
 </script>

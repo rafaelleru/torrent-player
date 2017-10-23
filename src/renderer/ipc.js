@@ -6,9 +6,10 @@ ipcRenderer.on('updateSongs', (event, args) => {
 })
 
 ipcRenderer.on('canPlay', (event, args) => {
-  store.commit('updateTorrentId', args[0])
-  store.commit('updateSongIndex', args[1])
-  store.commit('updateTitle', args[2])
+  store.commit('updateTorrentId', args.torrent)
+  store.commit('updateSongIndex', args.index)
+  store.commit('updateTitle', args.title)
+  store.commit('updatePlayingSong', args)
 })
 
 ipcRenderer.on('newStatus', (event, args) => {

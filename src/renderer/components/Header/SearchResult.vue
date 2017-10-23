@@ -1,10 +1,10 @@
 <template>
-<div v-on:click="requestPlay" class="searchResult">
+<div v-on:click="requestPlay" class="wrapper searchResult">
   <div id="title" class="Title">
-    <p>{{ this.title }}</p>
+    <i>{{ this.title }}</i>
   </div>
   <div id="torrent" class="Torrent">
-    <p>{{ this.torrent }}</p>
+    <i>{{ this.torrent }}</i>
   </div>
 </div>
 </template>

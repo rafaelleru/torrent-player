@@ -1,6 +1,11 @@
 <template>
   <footer id="player" class="player">
-    <progress min="0" max="1" value="0" ref="progress" id="progressBar" v-on:click="progress"></progress>
+    <!--<progress min="0" max="1" value="0" ref="progress" id="progressBar" v-on:click="progress"></progress>-->
+    <div class="progressbar" id="background"  v-on:click="progress" @mousedown="mouseDown" @mousemove="mouseMove" @mouseup="mouseUp">
+      <div class="actualprogress" id="progressBar" ref="progress">
+        <div class="bolita" id="bola"></div>
+      </div>
+    </div>
     <div class="div-player">
       <div class="izquierda">
         <a class="primary-text-color"><p class="song-title-tag">{{ title }}</p></a>
@@ -35,7 +40,8 @@
         playStatus: 'play_circle_outline',
         mute: false,
         volumeStatus: 'volume_up',
-        value: 100
+        value: 100,
+        entra: false
         // source: 'http://nadikun.com/audio/suit-and-tie-oscar-wylde-remix.mp3'
       }
     },
@@ -66,8 +72,9 @@
       onTimeUpdateListener: function () {
         var progressbar = this.$refs.progress
         var audio = this.$refs.audioTag
-        var currentProgress = (audio.currentTime / audio.duration)
-        progressbar.value = currentProgress
+        var currentProgress = (audio.currentTime / audio.duration) * 100
+        /* console.log(currentProgress) */
+        progressbar.style.width = currentProgress + '%'
       },
       requestPrevious: function () {
         ipcRenderer.send('playPrevious', [this.$store.getters.torrentId,
@@ -84,13 +91,28 @@
         audio.volume = volumeSlide.value
       },
       progress: function (e) {
-        var outside = document.getElementById('player')
+        var outside = document.getElementById('background')
         var x = Math.floor((e.offsetX / outside.offsetWidth) * 100)
         var audio = this.$refs.audioTag
-        if (x >= 0 && x <= 100) {
+        if (x > 0 && x <= 100) {
           audio.currentTime = x / 100 * audio.duration
+          this.$refs.progress.style.width = x + '%'
         }
-        document.getElementById('progressBar').innerHTML = x + '%'
+      },
+      mouseDown: function () {
+        if (!this.entra) {
+          this.entra = true
+        }
+      },
+      mouseMove: function (e) {
+        if (this.entra) {
+          this.progress(e)
+        }
+      },
+      mouseUp: function () {
+        if (this.entra) {
+          this.entra = false
+        }
       }
     },
     computed: {
@@ -280,5 +302,40 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
   background: #2196F3;
 }
-
+.progressbar{
+  width: 100%;
+  cursor: pointer;
+  background-color: grey;
+  height: 8px;
+  display: flex;
+  border-radius: 2px;
+  z-index: 1;
+}
+.actualprogress{
+  width: 0%;
+  height: 6px;
+  display: flex;
+  background-color: #2196F3;
+  z-index: 2;
+  border-radius: 2px;
+  margin-top:1px;
+  position: relative;
+}
+.bolita{
+  background-color: green;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  z-index: 3;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
+  /*transform: scale(0);*/
+  transition: transform .1s cubic-bezier(.3,0,.7,1);
+  position: absolute;
+  left: 99.5%;
+  top: -3px;
+  display: none;
+}
+.progressbar:hover > #progressBar #bola{
+  display: inline;
+}
 </style>

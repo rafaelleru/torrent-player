@@ -46,7 +46,10 @@
       }
     },
     created: function () {
-      window.addEventListener('keyup', this.handleKeyPress)
+      window.addEventListener('keydown', this.handleKeyPress)
+      ipcRenderer.on('playNext', () => this.requestNext())
+      ipcRenderer.on('playPrevious', () => this.requestPrevious())
+      ipcRenderer.on('playPause', () => this.togglePause())
     },
     beforeDestroy: function () {
       window.removeEventListener('keyup', this.handleKeyPress)
@@ -138,6 +141,8 @@
         const ctrl = e.ctrlKey
         switch (code) {
           case 32:
+            e.preventDefault()
+            e.stopPropagation()
             this.togglePause()
             break
           case 37:

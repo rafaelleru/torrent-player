@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, globalShortcut } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -32,7 +32,12 @@ function createWindow () {
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  globalShortcut.register('MediaNextTrack', () => mainWindow.webContents.send('playNext'))
+  globalShortcut.register('MediaPreviousTrack', () => mainWindow.webContents.send('playPrevious'))
+  globalShortcut.register('MediaPlayPause', () => mainWindow.webContents.send('playPause'))
+  createWindow()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

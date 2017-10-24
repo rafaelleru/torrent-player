@@ -7,6 +7,7 @@
        <input id="magnet-input"
          v-model="magnet"
          v-on:keyup.enter="addMagnet"
+         v-on:keydown="handleKeyDown"
          placeholder="Insert a magnet link, hash or path to .torrent"
          style="vertical-align: middle"
          >
@@ -79,6 +80,9 @@
       },
       updateTorrentStatus: function () {
         ipcRenderer.send('updateTorrentStatus')
+      },
+      handleKeyDown: function (e) {
+        e.stopPropagation()
       }
     },
     computed: {

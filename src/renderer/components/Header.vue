@@ -34,8 +34,8 @@
      <a class="utility-button">
        <i class="material-icons">settings</i>
      </a>
-     <md-menu class="utility-button" md-direction="top left" md-size="5">
-       <i class="material-icons" md-menu-trigger>search</i>
+     <md-menu class="utility-button" md-direction="top left" md-size="5" >
+       <md-icon class="material-icons" md-menu-trigger>search</md-icon>
        <md-menu-content>
          <div class="searchInput">
          <md-input-container md-inline md-clearable>
@@ -217,5 +217,18 @@
   margin-left: 5%;
   margin-right: 5%;
   border-radius: 10px;
+}
+
+.search{
+  position: fixed;
+  top: 50px;
+  left: 500px;
+  text-shadow: 1px 2px 11px #2196F3;
+}
+
+.md-menu-content{
+  top: 50px !important;
+  left: 500px !important;
+  position: fixed !important;
 }
 </style>

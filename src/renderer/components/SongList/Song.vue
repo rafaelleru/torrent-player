@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="{ 'light-primary-color': play, song: notplay}">
+  <div v-bind:class="{ eee: this.play, song: notplay}">
     <div class="play-button" v-on:click="this.requestPlay">
       <i class="material-icons">play_circle_outline</i>
     </div>
@@ -9,6 +9,7 @@
         v-on:click="this.requestPlay"> {{ title }}</a>
       <a style="display: inline-block; float: right"> {{ duration }} </a>
       <p style="font-size: small" class="secondary-text-color"> {{ torrent }} </p>
+      <p v-if="play"> playing </p>
     </div>
   </div>
 </template>
@@ -18,15 +19,20 @@
 
   export default {
     name: 'song',
-    props: ['title', 'torrent', 'index', 'duration', 'playing'],
+    props: ['title', 'torrent', 'index', 'duration'],
     data: function () {
       return {
-        play: false,
         notplay: true
+      }
+    },
+    computed: {
+      play: function () {
+        return this.$store.getters.songs.find(i => i.title === this.title).playing
       }
     },
     methods: {
       requestPlay: function () {
+        this.$store.commit('updatePlayingStatus', this.title)
         ipcRenderer.send('requestPlay', this.$store.getters.songs.find(i => i.title === this.title))
       }
     }
@@ -70,5 +76,9 @@
   .song {
     /*border-bottom: 1px solid #212121;
     background-color: whithe /*#616161*/
+  }
+
+  .eee {
+    background: red;
   }
 </style>

@@ -7,6 +7,7 @@
       	v-bind:title="song.title"
       	v-bind:torrent="song.torrent"
       	v-bind:index="song.index"
+        v-bind:playing="song.playing"
       	v-bind:duration="song.duration">
       </div>
     </draggable>
@@ -75,6 +76,7 @@ export default {
 <style>
 .playlist {
   margin-top: 55px;
+  background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2196F3 75%);
 }
 
 .play-button {
@@ -93,10 +95,10 @@ export default {
 }
 
 .song:nth-child(even) {
-  background-color: #ECEFF1;
+  /*background-color: #ECEFF1;*/
 }
 
 .song:nth-child(odd) {
-  background-color: #CFD8DC;
+  /*background-color: #CFD8DC;*/
 }
 </style>
